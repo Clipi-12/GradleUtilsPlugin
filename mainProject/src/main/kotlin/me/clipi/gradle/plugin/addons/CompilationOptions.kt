@@ -137,10 +137,21 @@ public class CompilationOptions(plugin: GradleUtilsPlugin) : GradleUtilsPlugin.A
             if (toolsJar.isFile) compileOnly.add(project.dependencies.create(project.files(toolsJar)))
         }
 
+        val compatibilityVersion = config.javaCompatibilityVersion.get()
         GradleUtil.configure(project, AbstractCompile::class.java) {
-            val version = config.javaCompatibilityVersion.get().toString()
+            val version = compatibilityVersion.toString()
             it.sourceCompatibility = version
             it.targetCompatibility = version
+        }
+
+        val generateSourcesAndJavadoc = config.generateSourcesAndJavadoc.get()
+        project.extensions.configure(JavaPluginExtension::class.java) {
+            it.sourceCompatibility = compatibilityVersion
+            it.targetCompatibility = compatibilityVersion
+            if (generateSourcesAndJavadoc) {
+                it.withSourcesJar()
+                it.withJavadocJar()
+            }
         }
     }
 

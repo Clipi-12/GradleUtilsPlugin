@@ -33,6 +33,10 @@ repositories {
     }
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
 tasks.withType<AbstractCompile> {
     val version = JavaVersion.VERSION_11.toString()
     sourceCompatibility = version

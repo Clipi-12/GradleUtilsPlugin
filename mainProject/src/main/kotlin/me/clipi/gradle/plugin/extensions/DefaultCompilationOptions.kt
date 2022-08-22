@@ -13,6 +13,7 @@ public abstract class DefaultCompilationOptions {
             includeLinesInJar.convention(true)
             jdk.set(JavaLanguageVersion.of(8))
             javaCompatibilityVersion.convention(JavaVersion.VERSION_1_8)
+            generateSourcesAndJavadoc.convention(true)
             javacLint.set("all")
             javadocLint.set("all,-reference")
             javadocMemberLevel.convention(JavadocMemberLevel.PROTECTED)
@@ -24,6 +25,7 @@ public abstract class DefaultCompilationOptions {
     public abstract val includeLinesInJar: Property<Boolean>
     public abstract val jdk: Property<JavaLanguageVersion>
     public abstract val javaCompatibilityVersion: Property<JavaVersion>
+    public abstract val generateSourcesAndJavadoc: Property<Boolean>
     public abstract val javacLint: Property<String>
     public abstract val javadocLint: Property<String>
     public abstract val javadocMemberLevel: Property<JavadocMemberLevel>
