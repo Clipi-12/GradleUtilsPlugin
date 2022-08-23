@@ -26,24 +26,29 @@ allprojects {
     }
 }
 
-fun appendIfDoesntExist(fileName: String, key: String, value: String) {
+fun appendIfDoesntExist(fileName: String, key: String, value: String?) {
     val file = File(projectDir, fileName)
     file.createNewFile()
     if (!file.isFile) throw IOException("Could not create file $file")
     val lines = file.readLines()
-    if (lines.any { line -> line.startsWith(key) }) return
-    var content = "$key$value"
+    val isKey: (String) -> Boolean = when {
+        value != null -> { line -> line.startsWith("$key =") || line.startsWith("$key=") }
+        else -> { line -> line.startsWith(key) }
+    }
+    if (lines.any(isKey)) return
+    var content = key
+    if (value != null) content += " = $value"
     if (lines.isNotEmpty() && lines.last().isNotBlank()) content = "\r\n$content"
     file.appendText(content)
 }
 
 fun getEnv(key: String) = ((env as ExtensionAware).extensions.getByName(key) as DotEnvProperty).value
-appendIfDoesntExist(".env", "GIT_USER=", "YOUR_GIT_USER")
-appendIfDoesntExist(".env", "GIT_PASS=", "YOUR_TOKEN")
-appendIfDoesntExist(".env.template", "GIT_USER=", "YOUR_GIT_USER")
-appendIfDoesntExist(".env.template", "GIT_PASS=", "YOUR_TOKEN")
-appendIfDoesntExist(".gitignore", ".env", "")
-appendIfDoesntExist("gradle.properties", "GIT_REPO_URI=", "https://github.com/OwnerAccount/Repository.git")
+appendIfDoesntExist(".env", "GIT_USER", "YOUR_GIT_USER")
+appendIfDoesntExist(".env", "GIT_PASS", "YOUR_TOKEN")
+appendIfDoesntExist(".env.template", "GIT_USER", "YOUR_GIT_USER")
+appendIfDoesntExist(".env.template", "GIT_PASS", "YOUR_TOKEN")
+appendIfDoesntExist(".gitignore", ".env", null)
+appendIfDoesntExist("gradle.properties", "GIT_REPO_URI", "https://github.com/OwnerAccount/Repository.git")
 System.setProperty("org.ajoberstar.grgit.auth.username", getEnv("GIT_USER"))
 System.setProperty("org.ajoberstar.grgit.auth.password", getEnv("GIT_PASS"))
 
