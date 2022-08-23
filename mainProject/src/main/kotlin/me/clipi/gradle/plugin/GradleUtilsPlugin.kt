@@ -8,6 +8,10 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.provider.Property
 import org.gradle.jvm.toolchain.internal.JavaToolchainQueryService
+import org.gradle.plugins.ide.eclipse.EclipsePlugin
+import org.gradle.plugins.ide.eclipse.model.EclipseModel
+import org.gradle.plugins.ide.idea.IdeaPlugin
+import org.gradle.plugins.ide.idea.model.IdeaModel
 import java.util.function.Function
 import javax.inject.Inject
 import kotlin.collections.set
@@ -37,6 +41,18 @@ public open class GradleUtilsPlugin : Plugin<Project> {
 
         project.pluginManager.apply("me.clipi.gradle.conventions.mavenlocal")
         project.pluginManager.apply(JavaPlugin::class.java)
+
+        project.pluginManager.apply(IdeaPlugin::class.java)
+        project.pluginManager.apply(EclipsePlugin::class.java)
+        project.extensions.getByType(IdeaModel::class.java).module {
+            it.isDownloadSources = true
+            it.isDownloadJavadoc = true
+        }
+        project.extensions.getByType(EclipseModel::class.java).classpath {
+            it.isDownloadSources = true
+            it.isDownloadJavadoc = true
+        }
+
 
         extension = project.extensions.create(
             GradleUtilsExtension::class.java,

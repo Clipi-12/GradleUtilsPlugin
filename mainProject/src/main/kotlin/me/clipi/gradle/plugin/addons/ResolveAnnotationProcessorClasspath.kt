@@ -11,8 +11,8 @@ public class ResolveAnnotationProcessorClasspath(plugin: GradleUtilsPlugin) : Gr
         val implementation = config("implementation")
         val testCompileOnly = config("testCompileOnly")
         val testImplementation = config("testImplementation")
-        annotationProcessor.extendsFrom(compileOnly, implementation)
-        testAnnotationProcessor.extendsFrom(testCompileOnly, testImplementation)
+        annotationProcessor.extendsFrom(implementation, compileOnly)
+        testAnnotationProcessor.extendsFrom(testImplementation, testCompileOnly)
     }
 
     private fun config(name: String) = project.configurations.named(name).get()

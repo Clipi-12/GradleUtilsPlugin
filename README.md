@@ -6,7 +6,11 @@ The first one is a gradle plugin that includes extensions to keep your gradle bu
 * It includes Zip and Jar alternatives to be able to modify their behaviour (for example, getting rid of META-INF/MANIFEST.MF)
 * It applies the java plugin automatically, as it is needed for almost every build these days
 * It also registers the MavenCentral and Google repositories for the same reason
-* It includes an addon system that can be used if needed
+* It includes an addon system that can be used if needed. Some of the default addons included help with:
+  * Spigot development
+  * Lombok development
+  * JDK requirements
+  * Javadoc customization
 
 All of the features can be configured or disabled if wanted
 

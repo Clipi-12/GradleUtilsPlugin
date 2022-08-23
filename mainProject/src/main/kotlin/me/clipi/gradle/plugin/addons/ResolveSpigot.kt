@@ -5,10 +5,6 @@ import me.clipi.gradle.plugin.extensions.ResolveSpigotConfig
 import me.clipi.gradle.util.*
 import org.gradle.api.artifacts.DependencySet
 import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.plugins.ide.eclipse.EclipsePlugin
-import org.gradle.plugins.ide.eclipse.model.EclipseModel
-import org.gradle.plugins.ide.idea.IdeaPlugin
-import org.gradle.plugins.ide.idea.model.IdeaModel
 import org.gradle.process.ExecResult
 import java.io.*
 import java.net.URL
@@ -107,17 +103,6 @@ public class ResolveSpigot(plugin: GradleUtilsPlugin) : GradleUtilsPlugin.Addon(
                 failures.forEach(Failure::rethrowIt)
                 failures.forEach(Failure::stopExec)
             }
-        }
-
-        project.pluginManager.apply(IdeaPlugin::class.java)
-        project.pluginManager.apply(EclipsePlugin::class.java)
-        project.extensions.getByType(IdeaModel::class.java).module {
-            it.isDownloadSources = true
-            it.isDownloadJavadoc = true
-        }
-        project.extensions.getByType(EclipseModel::class.java).classpath {
-            it.isDownloadSources = true
-            it.isDownloadJavadoc = true
         }
 
         for (version in spigotVersions) {
