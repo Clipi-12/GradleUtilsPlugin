@@ -58,6 +58,7 @@ public class ResolveSpigot(plugin: GradleUtilsPlugin) : GradleUtilsPlugin.Addon(
     override fun beforeResolution() {
         val spigotVersions = config.spigotVersions.get()
         if (spigotVersions.isEmpty()) return
+        println("Checking the existence of Spigot dependencies in project " + project.displayName)
         val config = project.extensions.getByType(ResolveSpigotConfig::class.java)
 
         val queue = mutableListOf<Callable<Any?>>()
